@@ -49,7 +49,6 @@
   input-imports = [
     "github.com/go-pg/pg",
     "github.com/go-pg/pg/orm",
-    "github.com/jinzhu/inflection",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
