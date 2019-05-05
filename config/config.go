@@ -6,6 +6,8 @@ import (
 )
 
 type Configuration struct {
+	Db         string `json:"db"`
+	DbSchema   string `json:"db_schema"`
 	DbName     string `json:"db_name"`
 	DbUser     string `json:"db_user"`
 	DbPassword string `json:"db_pass"`

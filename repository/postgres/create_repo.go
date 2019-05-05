@@ -7,12 +7,6 @@ import (
 	"github.com/go-pg/pg/orm"
 )
 
-func init() {
-	orm.SetTableNameInflector(func(name string) string {
-		return "dependency_tool." + name
-	})
-}
-
 func SetupSchema() error {
 	db := pg.Connect(&pg.Options{
 		User:     config.GetConfig().DbUser,
@@ -20,6 +14,8 @@ func SetupSchema() error {
 		Database: config.GetConfig().DbName,
 	})
 	defer db.Close()
+
+	setSchema(config.GetConfig().DbSchema)
 
 	for _, entity := range []interface{}{
 		(*repository.SourceSystem)(nil),
