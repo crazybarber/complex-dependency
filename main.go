@@ -2,7 +2,7 @@ package main
 
 import (
 	"complex-dependency/config"
-	"complex-dependency/repository/postgres"
+	"complex-dependency/repository"
 	"flag"
 	"fmt"
 	"log"
@@ -17,31 +17,21 @@ const (
 )
 
 func main() {
+	var err error = nil
 
 	/* PASS ARGV */
 	if len(os.Args) < 2 {
 		usage()
-		log.Fatalf("Command missing\n %s\n")
-	}
-
-	flagSet := flag.NewFlagSet("installFlags", flag.ExitOnError)
-	configFileLocationPtr := flagSet.String("configFile", "config.json", "Path to json config file")
-	err := flagSet.Parse(os.Args[1:])
-	if nil != err {
-		log.Fatalln("Command line flags processing error: " + err.Error())
-	}
-
-	err = config.Load(*configFileLocationPtr)
-	if nil != err {
-		log.Fatalln("Config problem: " + err.Error())
+		log.Fatalf("Command missing\n")
 	}
 
 	switch command := os.Args[1]; command {
 	case installCommand:
+		handleConfigFile()
 		log.Println("Installing db schema")
 		err = install()
 	case runCommand:
-
+		handleConfigFile()
 	default:
 		usage()
 		log.Fatalf("Unknown command %s\n", command)
@@ -55,15 +45,7 @@ func main() {
 }
 
 func install() error {
-	var err error = nil
-
-	switch dbConfig := config.GetConfig().Db; dbConfig {
-	case postgres.DbModuleConfigName:
-		err = postgres.SetupSchema()
-	default:
-		err = fmt.Errorf("Unknown database id %s\n", dbConfig)
-	}
-
+	err := repository.Create()
 	if nil != err {
 		return err
 	}
@@ -74,4 +56,17 @@ func usage() {
 	usage := "Usage: " + applicationName + " <command>\n" +
 		fmt.Sprintf("Possible commands: %s, %s", installCommand, runCommand)
 	fmt.Println(usage)
+}
+
+func handleConfigFile() {
+	flagSet := flag.NewFlagSet("installFlags", flag.ExitOnError)
+	configFileLocationPtr := flagSet.String("configFile", "config.json", "Path to json config file")
+	err := flagSet.Parse(os.Args[2:])
+	if nil != err {
+		log.Fatalln("Command line flags processing error: " + err.Error())
+	}
+	err = config.Load(*configFileLocationPtr)
+	if nil != err {
+		log.Fatalln("Config problem: " + err.Error())
+	}
 }

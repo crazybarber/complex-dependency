@@ -2,7 +2,7 @@ package postgres
 
 import (
 	"complex-dependency/config"
-	"complex-dependency/repository"
+	"complex-dependency/model"
 	"github.com/go-pg/pg"
 	"github.com/go-pg/pg/orm"
 )
@@ -18,12 +18,12 @@ func SetupSchema() error {
 	setSchema(config.GetConfig().DbSchema)
 
 	for _, entity := range []interface{}{
-		(*repository.SourceSystem)(nil),
-		(*repository.EventType)(nil),
-		(*repository.EventTypeImplementation)(nil),
-		(*repository.Field)(nil),
-		(*repository.FieldImplementation)(nil),
-		(*repository.RestrictedValue)(nil),
+		(*model.SourceSystem)(nil),
+		(*model.EventType)(nil),
+		(*model.EventTypeImplementation)(nil),
+		(*model.Field)(nil),
+		(*model.FieldImplementation)(nil),
+		(*model.RestrictedValue)(nil),
 	} {
 		err := db.CreateTable(entity, &orm.CreateTableOptions{
 			FKConstraints: true,
