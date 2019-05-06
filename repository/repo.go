@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"complex-dependency/config"
-	"complex-dependency/repository/postgres"
+	"docugraphy/config"
+	"docugraphy/repository/postgres"
 	"fmt"
 )
 

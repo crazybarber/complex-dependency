@@ -1,8 +1,8 @@
 package main
 
 import (
-	"complex-dependency/config"
-	"complex-dependency/repository"
+	"docugraphy/config"
+	"docugraphy/repository"
 	"flag"
 	"fmt"
 	"log"

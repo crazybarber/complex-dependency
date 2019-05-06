@@ -1,8 +1,8 @@
 package postgres
 
 import (
-	"complex-dependency/config"
-	"complex-dependency/model"
+	"docugraphy/config"
+	"docugraphy/model"
 	"github.com/go-pg/pg"
 	"github.com/go-pg/pg/orm"
 )
