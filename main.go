@@ -53,19 +53,19 @@ func install() error {
 }
 
 func usage() {
-	usage := "Usage: " + applicationName + " <command>\n" +
+	usage := "Usage: " + applicationName + " <command>; " +
 		fmt.Sprintf("Possible commands: %s, %s", installCommand, runCommand)
-	fmt.Println(usage)
+	log.Println(usage)
 }
 
 func handleConfigFile() {
 	flagSet := flag.NewFlagSet("installFlags", flag.ExitOnError)
-	configFileLocationPtr := flagSet.String("configFile", "config.json", "Path to json config file")
+	configFileLocation :=  *(flagSet.String("configFile", "config.json", "Path to json config file"))
 	err := flagSet.Parse(os.Args[2:])
 	if nil != err {
 		log.Fatalln("Command line flags processing error: " + err.Error())
 	}
-	err = config.Load(*configFileLocationPtr)
+	err = config.Load(configFileLocation)
 	if nil != err {
 		log.Fatalln("Config problem: " + err.Error())
 	}
