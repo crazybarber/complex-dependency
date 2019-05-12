@@ -1,5 +1,12 @@
 package repository
 
 const (
-	DbModuleConfigName string = "postgres"
+	TypeNamePostgres string = "postgres"
 )
+
+type Repository interface {
+	SetupSchema() error
+	GetSourceSystems() ([]string, error)
+}
+
+

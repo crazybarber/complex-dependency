@@ -6,7 +6,9 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
+	"github.com/julienschmidt/httprouter"
 )
 
 var applicationName = os.Args[0]
@@ -69,4 +71,14 @@ func handleConfigFile() {
 	if nil != err {
 		log.Fatalln("Config problem: " + err.Error())
 	}
+
+}
+
+func startService() {
+
+	router := httprouter.New()
+	router.POST("/source_system", nil)
+	router.GET("/source_systems", nil)
+	log.Fatal(http.ListenAndServe(":8080", router))
+
 }

@@ -1,21 +1,20 @@
 package postgres
 
 import (
-	"docugraphy/config"
 	"docugraphy/model"
 	"github.com/go-pg/pg"
 	"github.com/go-pg/pg/orm"
 )
 
-func SetupSchema() error {
+func (pr *PostgresRepository) SetupSchema() error {
 	db := pg.Connect(&pg.Options{
-		User:     config.GetConfig().DbUser,
-		Password: config.GetConfig().DbPassword,
-		Database: config.GetConfig().DbName,
+		User:     pr.DbUser,
+		Password: pr.DbPassword,
+		Database: pr.DbName,
 	})
 	defer db.Close()
 
-	setSchema(config.GetConfig().DbSchema)
+	setSchema(pr.DbSchema)
 
 	for _, entity := range []interface{}{
 		(*model.SourceSystem)(nil),
@@ -32,8 +31,26 @@ func SetupSchema() error {
 			IfNotExists:   true,
 		})
 		if err != nil {
-			return err
+
 		}
 	}
 	return nil
+}
+
+func (pr *PostgresRepository) GetSourceSystems() ([]string, error) {
+	db := pg.Connect(&pg.Options{
+		User:     pr.DbUser,
+		Password: pr.DbPassword,
+		Database: pr.DbName,
+	})
+	defer db.Close()
+
+	var sourceSystem = new([]model.SourceSystem)
+
+	err := db.Model(&sourceSystem).Select()
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, nil
 }

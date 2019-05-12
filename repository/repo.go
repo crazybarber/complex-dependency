@@ -9,11 +9,12 @@ import (
 func Create() error {
 	var err error = nil
 
-	switch dbConfig := config.GetConfig().Db; dbConfig {
-	case DbModuleConfigName:
-		err = postgres.SetupSchema()
+	switch dbType := config.GetConfig().DbType; dbType {
+	case TypeNamePostgres:
+		dbRepo := postgres.Create()
+		err = dbRepo.SetupSchema()
 	default:
-		err = fmt.Errorf("Unknown database id %s\n", dbConfig)
+		err = fmt.Errorf("Unknown database id %s\n", dbType)
 	}
 	return err
 }

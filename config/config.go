@@ -6,11 +6,16 @@ import (
 )
 
 type Configuration struct {
-	Db         string `json:"db"`
-	DbSchema   string `json:"db_schema"`
-	DbName     string `json:"db_name"`
-	DbUser     string `json:"db_user"`
-	DbPassword string `json:"db_pass"`
+	ListenPort string `json:"listen_port"`
+	DbType     string `json:"type"`
+	DbConfig   DbConfiguration `json:"db_config"`
+}
+
+type DbConfiguration struct {
+	DbSchema   string `json:"schema"`
+	DbName     string `json:"name"`
+	DbUser     string `json:"user"`
+	DbPassword string `json:"pass"`
 }
 
 var config = Configuration{}
