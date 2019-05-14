@@ -3,12 +3,12 @@ package model
 type ImplementationStatus uint16
 
 const (
-	Planned ImplementationStatus = iota // TODO: Docu
-	Defined
-	Implemented
-	Tested
-	InUse
-	Decommisioned
+	Proposed ImplementationStatus = iota // [optional]Is provided by someone as 'nice-to-have
+	ToBeImplemented						// Is officially confirmed and waiting for implementation
+	InDevelopment						// A team is working on that
+	Released							// Available on PROD
+	Cancelled							// Cancelled before it reached PROD
+	Decommisioned						// Removed from PROD
 )
 
 
