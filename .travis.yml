@@ -1,0 +1,11 @@
+git:
+  depth: false
+  quiet: true
+
+language: go
+
+script: make test
+
+go:
+  - "1.12"
+  - "1.10"
