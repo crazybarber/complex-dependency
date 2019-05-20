@@ -1,14 +1,15 @@
 package main
 
 import (
+	"docugraphy/api"
 	"docugraphy/config"
 	"docugraphy/repository"
 	"flag"
 	"fmt"
+	"github.com/julienschmidt/httprouter"
 	"log"
 	"net/http"
 	"os"
-	"github.com/julienschmidt/httprouter"
 )
 
 var applicationName = os.Args[0]
@@ -34,6 +35,7 @@ func main() {
 		err = install()
 	case runCommand:
 		handleConfigFile()
+		startService()
 	default:
 		usage()
 		log.Fatalf("Unknown command %s\n", command)
@@ -62,7 +64,7 @@ func usage() {
 
 func handleConfigFile() {
 	flagSet := flag.NewFlagSet("installFlags", flag.ExitOnError)
-	configFileLocation :=  *(flagSet.String("configFile", "config.json", "Path to json config file"))
+	configFileLocation := *(flagSet.String("configFile", "config.json", "Path to json config file"))
 	err := flagSet.Parse(os.Args[2:])
 	if nil != err {
 		log.Fatalln("Command line flags processing error: " + err.Error())
@@ -75,10 +77,13 @@ func handleConfigFile() {
 }
 
 func startService() {
-
+	err := repository.Create()
+	if nil != err {
+		//TODO
+	}
 	router := httprouter.New()
 	router.POST("/source_system", nil)
-	router.GET("/source_systems", nil)
+	router.GET("/source_systems", api.GeSourceSystems)
 	log.Fatal(http.ListenAndServe(":8080", router))
 
 }

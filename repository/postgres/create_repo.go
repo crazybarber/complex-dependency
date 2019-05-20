@@ -6,14 +6,19 @@ import (
 	"github.com/go-pg/pg/orm"
 )
 
-func (pr *PostgresRepository) SetupSchema() error {
-	db := pg.Connect(&pg.Options{
+func (pr *Repository) Connect() {
+	pr.Connection = pg.Connect(&pg.Options{
 		User:     pr.DbUser,
 		Password: pr.DbPassword,
 		Database: pr.DbName,
 	})
-	defer db.Close()
+}
 
+func (pr *Repository) Disconnect() error {
+	return pr.Connection.Close()
+}
+
+func (pr *Repository) SetupSchema() error {
 	setSchema(pr.DbSchema)
 
 	for _, entity := range []interface{}{
@@ -24,33 +29,32 @@ func (pr *PostgresRepository) SetupSchema() error {
 		(*model.FieldImplementation)(nil),
 		(*model.RestrictedValue)(nil),
 	} {
-		err := db.CreateTable(entity, &orm.CreateTableOptions{
+		err := pr.Connection.CreateTable(entity, &orm.CreateTableOptions{
 			FKConstraints: true,
 			Varchar:       150,
 			Temp:          false,
 			IfNotExists:   true,
 		})
 		if err != nil {
-
 		}
 	}
 	return nil
 }
 
-func (pr *PostgresRepository) GetSourceSystems() ([]string, error) {
-	db := pg.Connect(&pg.Options{
-		User:     pr.DbUser,
-		Password: pr.DbPassword,
-		Database: pr.DbName,
-	})
-	defer db.Close()
+func (pr *Repository) GetSourceSystems() ([]model.SourceSystem, error) {
+	var sourceSystem []model.SourceSystem
 
-	var sourceSystem = new([]model.SourceSystem)
-
-	err := db.Model(&sourceSystem).Select()
+	err := pr.Connection.Model(&sourceSystem).Select()
 	if err != nil {
 		return nil, err
 	}
+	return sourceSystem, nil
+}
 
-	return nil, nil
+func (pr *Repository) AddSourceSystem(sourceSystem model.SourceSystem) error {
+	err := pr.Connection.Insert(sourceSystem)
+	if err != nil {
+		return err
+	}
+	return nil
 }

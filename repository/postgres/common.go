@@ -2,27 +2,26 @@ package postgres
 
 import (
 	"docugraphy/config"
+	"github.com/go-pg/pg"
 	"github.com/go-pg/pg/orm"
 )
 
-var dbConnection *orm.DB
-
-type PostgresRepository struct {
+type Repository struct {
 	DbSchema   string
 	DbName     string
 	DbUser     string
 	DbPassword string
+	Connection *pg.DB
 }
 
-func Create() PostgresRepository {
+func Build() *Repository {
 	dbConfig := config.GetConfig().DbConfig
-	return PostgresRepository {
-		DbSchema: dbConfig.DbSchema,
-		DbName: dbConfig.DbName,
-		DbUser: dbConfig.DbUser,
+	return &Repository{
+		DbSchema:   dbConfig.DbSchema,
+		DbName:     dbConfig.DbName,
+		DbUser:     dbConfig.DbUser,
 		DbPassword: dbConfig.DbPassword,
 	}
-
 }
 
 func setSchema(schemaName string) {
@@ -30,5 +29,3 @@ func setSchema(schemaName string) {
 		return schemaName + "." + name
 	})
 }
-
-
