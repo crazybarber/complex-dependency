@@ -6,7 +6,7 @@ import (
 )
 
 type Configuration struct {
-	ListenPort string          `json:"listen_port"`
+	ListenPort int             `json:"listen_port"`
 	DbType     string          `json:"type"`
 	DbConfig   DbConfiguration `json:"db_config"`
 }

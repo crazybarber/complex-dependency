@@ -11,5 +11,5 @@ type Repository interface {
 	Disconnect() error
 	SetupSchema() error
 	GetSourceSystems() ([]model.SourceSystem, error)
-	AddSourceSystem(sourceSystem model.SourceSystem) error
+	AddSourceSystem(sourceSystem *model.SourceSystem) error
 }

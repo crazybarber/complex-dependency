@@ -10,15 +10,7 @@ import (
 var dbRepo Repository
 
 func Create() error {
-	var err error = nil
-
-	switch dbType := config.GetConfig().DbType; dbType {
-	case TypeNamePostgres:
-		dbRepo = postgres.Build()
-	default:
-		err = fmt.Errorf("Unknown database id %s\n", dbType)
-	}
-	err = dbRepo.SetupSchema()
+	err := dbRepo.SetupSchema()
 	return err
 }
 
@@ -39,6 +31,6 @@ func GetSourceSystems() ([]model.SourceSystem, error) {
 	return dbRepo.GetSourceSystems()
 }
 
-func AddSourceSystem(sourceSystem model.SourceSystem) error {
+func AddSourceSystem(sourceSystem *model.SourceSystem) error {
 	return dbRepo.AddSourceSystem(sourceSystem)
 }

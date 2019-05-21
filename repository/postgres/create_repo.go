@@ -4,6 +4,7 @@ import (
 	"docugraphy/model"
 	"github.com/go-pg/pg"
 	"github.com/go-pg/pg/orm"
+	"log"
 )
 
 func (pr *Repository) Connect() {
@@ -12,6 +13,8 @@ func (pr *Repository) Connect() {
 		Password: pr.DbPassword,
 		Database: pr.DbName,
 	})
+	setSchema(pr.DbSchema)
+	log.Println("Postgres DB connected")
 }
 
 func (pr *Repository) Disconnect() error {
@@ -51,10 +54,11 @@ func (pr *Repository) GetSourceSystems() ([]model.SourceSystem, error) {
 	return sourceSystem, nil
 }
 
-func (pr *Repository) AddSourceSystem(sourceSystem model.SourceSystem) error {
+func (pr *Repository) AddSourceSystem(sourceSystem *model.SourceSystem) error {
 	err := pr.Connection.Insert(sourceSystem)
 	if err != nil {
 		return err
 	}
+	log.Println("Inserted new Source System: ", sourceSystem.Name)
 	return nil
 }

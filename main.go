@@ -49,7 +49,11 @@ func main() {
 }
 
 func install() error {
-	err := repository.Create()
+	err := repository.Connect()
+	if nil != err {
+		return err
+	}
+	err = repository.Create()
 	if nil != err {
 		return err
 	}
@@ -64,12 +68,12 @@ func usage() {
 
 func handleConfigFile() {
 	flagSet := flag.NewFlagSet("installFlags", flag.ExitOnError)
-	configFileLocation := *(flagSet.String("configFile", "config.json", "Path to json config file"))
+	configFileLocation := flagSet.String("configFile", "config.json", "Path to json config file")
 	err := flagSet.Parse(os.Args[2:])
 	if nil != err {
 		log.Fatalln("Command line flags processing error: " + err.Error())
 	}
-	err = config.Load(configFileLocation)
+	err = config.Load(*configFileLocation)
 	if nil != err {
 		log.Fatalln("Config problem: " + err.Error())
 	}
@@ -77,13 +81,13 @@ func handleConfigFile() {
 }
 
 func startService() {
-	err := repository.Create()
+	err := repository.Connect()
 	if nil != err {
 		//TODO
 	}
 	router := httprouter.New()
-	router.POST("/source_system", nil)
-	router.GET("/source_systems", api.GeSourceSystems)
+	router.POST("/source_system", api.AddSourceSystem)
+	router.GET("/source_systems", api.GetSourceSystems)
 	log.Fatal(http.ListenAndServe(":8080", router))
 
 }
