@@ -62,3 +62,51 @@ func (pr *Repository) AddSourceSystem(sourceSystem *model.SourceSystem) error {
 	log.Println("Inserted new Source System: ", sourceSystem.Name)
 	return nil
 }
+
+func (pr *Repository) GetEventTypes() ([]model.EventType, error) {
+	panic("implement me")
+}
+
+func (pr *Repository) GetFields() ([]model.Field, error) {
+	panic("implement me")
+}
+
+func (pr *Repository) GetEventTypeImplementation(sourceSystemName string) ([]model.EventTypeImplementation, error) {
+	panic("implement me")
+}
+
+func (pr *Repository) GetFieldImplementation(sourceSystemName string, eventTypeName string) ([]model.FieldImplementation, error) {
+	panic("implement me")
+}
+
+func (pr *Repository) AddEventType(eventType *model.EventType) error {
+	panic("implement me")
+}
+
+func (pr *Repository) AddField(field *model.Field) error {
+	panic("implement me")
+}
+
+func (pr *Repository) AddEventTypeImplementation(eventTypeImplementation *model.EventTypeImplementation) error {
+	panic("implement me")
+}
+
+func (pr *Repository) AddFieldImplementation(fieldImplementation *model.FieldImplementation) error {
+	panic("implement me")
+}
+
+func (pr *Repository) ChangeStatusOfEventType(eventTypeName string, status model.ImplementationStatus) error {
+	panic("implement me")
+}
+
+func (pr *Repository) ChangeStatusOfField(FieldName string, status model.ImplementationStatus) error {
+	panic("implement me")
+}
+
+func (pr *Repository) ChangeStatusOfEventTypeImplementation(EventTypeName string, sourceSystem string, status model.ImplementationStatus) error {
+	panic("implement me")
+}
+
+func (pr *Repository) ChangeStatusOfFieldImplementation(FieldName string, sourceSystem string, status model.ImplementationStatus) error {
+	panic("implement me")
+}

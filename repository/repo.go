@@ -7,10 +7,10 @@ import (
 	"fmt"
 )
 
-var dbRepo Repository
+var DbRepo Repository
 
 func Create() error {
-	err := dbRepo.SetupSchema()
+	err := DbRepo.SetupSchema()
 	return err
 }
 
@@ -18,19 +18,19 @@ func Connect() error {
 	var err error = nil
 	switch dbType := config.GetConfig().DbType; dbType {
 	case TypeNamePostgres:
-		dbRepo = postgres.Build()
+		DbRepo = postgres.Build()
 	default:
 		err = fmt.Errorf("Unknown database id %s\n", dbType)
 		return err
 	}
-	dbRepo.Connect()
+	DbRepo.Connect()
 	return err
 }
 
 func GetSourceSystems() ([]model.SourceSystem, error) {
-	return dbRepo.GetSourceSystems()
+	return DbRepo.GetSourceSystems()
 }
 
 func AddSourceSystem(sourceSystem *model.SourceSystem) error {
-	return dbRepo.AddSourceSystem(sourceSystem)
+	return DbRepo.AddSourceSystem(sourceSystem)
 }
