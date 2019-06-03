@@ -14,8 +14,8 @@ type Repository interface {
 	GetSourceSystems() ([]model.SourceSystem, error)
 	GetEventTypes() ([]model.EventType, error)
 	GetFields() ([]model.Field, error)
-	GetEventTypeImplementation(sourceSystemName string) ([]model.EventTypeImplementation, error)
-	GetFieldImplementation(sourceSystemName string, eventTypeName string) ([]model.FieldImplementation, error)
+	GetEventTypeImplementations(sourceSystemName string) ([]model.EventTypeImplementation, error)
+	GetFieldImplementations(sourceSystemName string, fieldName string) ([]model.FieldImplementation, error)
 
 	AddSourceSystem(sourceSystem *model.SourceSystem) error
 	AddEventType(eventType *model.EventType) error
@@ -24,7 +24,7 @@ type Repository interface {
 	AddFieldImplementation(fieldImplementation *model.FieldImplementation) error
 
 	ChangeStatusOfEventType(eventTypeName string, status model.ImplementationStatus) error
-	ChangeStatusOfField(FieldName string, status model.ImplementationStatus) error
+	ChangeStatusOfField(fieldName string, status model.ImplementationStatus) error
 	ChangeStatusOfEventTypeImplementation(eventTypeName string, sourceSystemName string, status model.ImplementationStatus) error
-	ChangeStatusOfFieldImplementation(fieldName string, sourceSystemName string, status model.ImplementationStatus) error
+	ChangeStatusOfFieldImplementation(fieldName string, eventTypeName string, sourceSystem string, status model.ImplementationStatus) error
 }
